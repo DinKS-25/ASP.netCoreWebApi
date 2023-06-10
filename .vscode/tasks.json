@@ -36,6 +36,15 @@
                 "${workspaceFolder}/Solution.sln"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "type": "dotnet",
+            "task": "build",
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": "build",
+            "label": "dotnet: build"
         }
     ]
 }
