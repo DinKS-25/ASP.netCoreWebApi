@@ -45,6 +45,15 @@
             ],
             "group": "build",
             "label": "dotnet: build"
+        },
+        {
+            "type": "dotnet",
+            "task": "clean",
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": "clean",
+            "label": "dotnet: clean"
         }
     ]
 }
