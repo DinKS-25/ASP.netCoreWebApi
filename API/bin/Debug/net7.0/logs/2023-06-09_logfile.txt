@@ -1,0 +1,12 @@
+2023-06-09 08:22:45.8813 INFO Here is info message from our values controller.
+2023-06-09 08:22:45.9991 DEBUG Here is debug message from our values controller.
+2023-06-09 08:22:45.9991 WARN Here is warn message from our values controller.
+2023-06-09 08:22:45.9991 ERROR Here is an error message from our values controller.
+2023-06-09 08:23:30.1469 INFO Here is info message from our values controller.
+2023-06-09 08:23:30.1469 DEBUG Here is debug message from our values controller.
+2023-06-09 08:23:30.1469 WARN Here is warn message from our values controller.
+2023-06-09 08:23:30.1469 ERROR Here is an error message from our values controller.
+2023-06-09 13:35:54.2256 INFO Here is info message from our values controller.
+2023-06-09 13:35:54.2407 DEBUG Here is debug message from our values controller.
+2023-06-09 13:35:54.2407 WARN Here is warn message from our values controller.
+2023-06-09 13:35:54.2407 ERROR Here is an error message from our values controller.
