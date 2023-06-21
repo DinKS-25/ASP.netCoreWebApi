@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Service.Contracts;
@@ -17,17 +18,14 @@ namespace API.Presentation.Controllers
         [HttpGet]
         public IActionResult GetCompanies()
         {
-            try
-            {
-                var companies =
-                _service.CompanyService.GetAllCompanies(trackChanges: false);
+                var companies = _service.CompanyService.GetAllCompanies(trackChanges: false);
                 return Ok(companies);
-            }
-            catch
-            {
-                return StatusCode(500, "Internal server error");
-            }
         }
-
+        
+        [HttpGet("{id}")]
+        public IActionResult GetActionResult(string id){
+            var company = _service.CompanyService.GetCompany(id, trackChanges: false);
+            return Ok(company);
+        }
     }
 }

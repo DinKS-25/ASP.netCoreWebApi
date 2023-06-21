@@ -38,22 +38,13 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "type": "dotnet",
-            "task": "build",
-            "problemMatcher": [
-                "$msCompile"
+            "label": "clean",
+            "command":"dotnet",
+            "type": "process",
+            "args": [
+                "clean"
             ],
-            "group": "build",
-            "label": "dotnet: build"
-        },
-        {
-            "type": "dotnet",
-            "task": "clean",
-            "problemMatcher": [
-                "$msCompile"
-            ],
-            "group": "clean",
-            "label": "dotnet: clean"
+            "problemMatcher":"$msCompile"
         }
     ]
 }
