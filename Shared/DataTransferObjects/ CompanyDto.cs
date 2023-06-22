@@ -1,4 +1,9 @@
 namespace Shared.DataTransferObjects
 {
-    public record CompanyDto(string _id, string NameWithCount, string address);
+    public record CompanyDto
+    {
+        public string _id { get; init; }
+        public string NameWithCount { get; init; }
+        public string address { get; init; }
+    }
 }

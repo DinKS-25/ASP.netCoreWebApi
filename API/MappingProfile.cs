@@ -8,7 +8,7 @@ namespace API
     {
         public MappingProfile()
         {
-            CreateMap<Company,CompanyDto>().ForCtorParam("NameWithCount",opt=>opt.MapFrom(x=>string.Join('-',x.name,x.employeeCount)));
+            CreateMap<Company,CompanyDto>().ForMember(c=>c.NameWithCount,opt=>opt.MapFrom(x=>string.Join('-',x.name,x.employeeCount)));
         }
     }
 }
