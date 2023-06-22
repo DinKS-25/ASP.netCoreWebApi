@@ -36,6 +36,15 @@
                 "${workspaceFolder}/Solution.sln"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "clean",
+            "command":"dotnet",
+            "type": "process",
+            "args": [
+                "clean"
+            ],
+            "problemMatcher":"$msCompile"
         }
     ]
 }
