@@ -10,10 +10,13 @@ builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 
 builder.Services.AddControllers(
-    config=>{
-        config.RespectBrowserAcceptHeader=true;
+    config =>
+    {
+        config.RespectBrowserAcceptHeader = true;
         config.ReturnHttpNotAcceptable = true;
-}).AddXmlDataContractSerializerFormatters().AddApplicationPart(typeof(API.Presentation.AssemblyReference).Assembly);
+    }).AddXmlDataContractSerializerFormatters()
+.AddCustomCSVFormatter()
+.AddApplicationPart(typeof(API.Presentation.AssemblyReference).Assembly);
 builder.Services.AddEndpointsApiExplorer();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddSwaggerGen();
