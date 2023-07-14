@@ -57,5 +57,13 @@ namespace API.Presentation.Controllers
             return CreatedAtRoute("CompanyCollection", new { result.ids },
             result.companies);
         }
+
+        [HttpDelete("{companyId:guid}")]
+        public IActionResult DeleteCompany(Guid companyId)
+        {
+            _service.CompanyService.RemoveCompany(companyId, trackChanges:false);
+            return NoContent();
+        }
+
     }
 }

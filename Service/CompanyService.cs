@@ -67,6 +67,15 @@ namespace Service
             var ids = string.Join(",", companyCollectionToReturn.Select(c => c._id));
             return (companies: companyCollectionToReturn, ids: ids);
         }
+        public void RemoveCompany(Guid id,bool trackChanges){
+            string companyId = Convert.ToString(id);
+            var company = _repository.CompanyRepository.GetCompany(companyId, trackChanges);
+            if(company is null){
+                throw new CompanyNotFoundException(companyId);
+            }
+            _repository.CompanyRepository.DeleteCompany(company);
+            _repository.Save();
+        }
 
 
     }
