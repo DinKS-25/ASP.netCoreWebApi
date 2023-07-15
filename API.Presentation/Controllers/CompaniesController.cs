@@ -61,9 +61,17 @@ namespace API.Presentation.Controllers
         [HttpDelete("{companyId:guid}")]
         public IActionResult DeleteCompany(Guid companyId)
         {
-            _service.CompanyService.RemoveCompany(companyId, trackChanges:false);
+            _service.CompanyService.RemoveCompany(companyId, trackChanges: false);
             return NoContent();
         }
 
+        [HttpPut("{id:guid}")]
+        public IActionResult UpdateEmployeeForCompany(Guid id,[FromBody] CompanyForUpdateDTO companyForUpdate)
+        {
+            if (companyForUpdate is null)
+                return BadRequest("companyForUpdate object is null");
+            _service.CompanyService.UpdateCompany(id,companyForUpdate, trackChanges: true);
+            return NoContent();
+        }
     }
 }

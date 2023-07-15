@@ -77,6 +77,16 @@ namespace Service
             _repository.Save();
         }
 
+        public void UpdateCompany(Guid companyId,CompanyForUpdateDTO companyForUpdate,bool trackChanges){
+            var compId = Convert.ToString(companyId);
+            var company = _repository.CompanyRepository.GetCompany(compId,trackChanges);
+            if(company is null){
+                throw new CompanyNotFoundException(compId);
+            }
+            _mapper.Map(companyForUpdate,company);
+            _repository.Save();
+        }
+
 
     }
 }
