@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using API.Presentation.ModelBinders;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Service.Contracts;
@@ -66,12 +67,24 @@ namespace API.Presentation.Controllers
         }
 
         [HttpPut("{id:guid}")]
-        public IActionResult UpdateEmployeeForCompany(Guid id,[FromBody] CompanyForUpdateDTO companyForUpdate)
+        public IActionResult UpdateEmployeeForCompany(Guid id, [FromBody] CompanyForUpdateDTO companyForUpdate)
         {
             if (companyForUpdate is null)
                 return BadRequest("companyForUpdate object is null");
-            _service.CompanyService.UpdateCompany(id,companyForUpdate, trackChanges: true);
+            _service.CompanyService.UpdateCompany(id, companyForUpdate, trackChanges: true);
             return NoContent();
         }
+
+        [HttpPatch("{id:guid}")]
+        public IActionResult PartiallyUpdateCompany(Guid id,[FromBody] JsonPatchDocument<CompanyForUpdateDTO> patchDoc)
+        {
+            if (patchDoc is null)
+                return BadRequest("patchDoc object sent from client is null.");
+            var result = _service.CompanyService.GetEmployeeForPatch(id,compTrackChanges: true);
+            patchDoc.ApplyTo(result.companyTopatch);
+            _service.CompanyService.SaveChangesForPatch(result.companyTopatch,result.companyEntity);
+            return NoContent();
+        }
+
     }
 }

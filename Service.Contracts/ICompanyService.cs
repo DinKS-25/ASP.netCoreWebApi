@@ -1,4 +1,5 @@
 
+using Entities.Models;
 using Shared.DataTransferObjects;
 
 namespace Service.Contracts
@@ -11,6 +12,8 @@ namespace Service.Contracts
         IEnumerable<CompanyDto> GetByIds(IEnumerable<Guid> ids, bool trackChanges);
         (IEnumerable<CompanyDto> companies, string ids) CreateCompanyCollection(IEnumerable<CompanyForCreationDto> companyCollection);
         void RemoveCompany(Guid companyId, bool trackChanges);
-        void UpdateCompany(Guid companyId,CompanyForUpdateDTO companyForUpdate, bool trackChanges);
+        void UpdateCompany(Guid companyId, CompanyForUpdateDTO companyForUpdate, bool trackChanges);
+        (CompanyForUpdateDTO companyTopatch, Company companyEntity) GetEmployeeForPatch(Guid companyId, bool compTrackChanges);
+        void SaveChangesForPatch(CompanyForUpdateDTO companyToPatch, Company companyEntity);
     }
 }

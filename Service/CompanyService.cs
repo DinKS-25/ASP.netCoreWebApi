@@ -67,26 +67,44 @@ namespace Service
             var ids = string.Join(",", companyCollectionToReturn.Select(c => c._id));
             return (companies: companyCollectionToReturn, ids: ids);
         }
-        public void RemoveCompany(Guid id,bool trackChanges){
+        public void RemoveCompany(Guid id, bool trackChanges)
+        {
             string companyId = Convert.ToString(id);
             var company = _repository.CompanyRepository.GetCompany(companyId, trackChanges);
-            if(company is null){
+            if (company is null)
+            {
                 throw new CompanyNotFoundException(companyId);
             }
             _repository.CompanyRepository.DeleteCompany(company);
             _repository.Save();
         }
 
-        public void UpdateCompany(Guid companyId,CompanyForUpdateDTO companyForUpdate,bool trackChanges){
+        public void UpdateCompany(Guid companyId, CompanyForUpdateDTO companyForUpdate, bool trackChanges)
+        {
             var compId = Convert.ToString(companyId);
-            var company = _repository.CompanyRepository.GetCompany(compId,trackChanges);
-            if(company is null){
+            var company = _repository.CompanyRepository.GetCompany(compId, trackChanges);
+            if (company is null)
+            {
                 throw new CompanyNotFoundException(compId);
             }
-            _mapper.Map(companyForUpdate,company);
+            _mapper.Map(companyForUpdate, company);
             _repository.Save();
         }
 
+        public (CompanyForUpdateDTO companyTopatch, Company companyEntity) GetEmployeeForPatch(Guid companyId, bool compTrackChanges)
+        {
+            var compId = Convert.ToString(companyId);
+            var company = _repository.CompanyRepository.GetCompany(compId, compTrackChanges);
+            if (company is null)
+                throw new CompanyNotFoundException(compId);
+            var companyToPatch = _mapper.Map<CompanyForUpdateDTO>(company);
+            return(companyToPatch,company);
+        }
 
+        public void SaveChangesForPatch(CompanyForUpdateDTO companyToPatch, Company companyEntity)
+        {
+            _mapper.Map(companyToPatch,companyEntity);
+            _repository.Save();
+        }
     }
 }
