@@ -1,8 +1,6 @@
-using System.Linq.Expressions;
 using API.Presentation.ModelBinders;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 
@@ -37,9 +35,10 @@ namespace API.Presentation.Controllers
         {
             if (company is null)
                 return BadRequest("CompanyForCreationDto object is null");
+            if (!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
             var createdCompany = _service.CompanyService.CreateCompany(company);
-            return CreatedAtRoute("CompanyById", new { id = createdCompany._id },
-            createdCompany);
+            return CreatedAtRoute("CompanyById", new { id = createdCompany._id }, createdCompany);
         }
 
         [HttpGet("collection/({ids})", Name = "CompanyCollection")]
@@ -71,18 +70,23 @@ namespace API.Presentation.Controllers
         {
             if (companyForUpdate is null)
                 return BadRequest("companyForUpdate object is null");
+            if (!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
             _service.CompanyService.UpdateCompany(id, companyForUpdate, trackChanges: true);
             return NoContent();
         }
 
         [HttpPatch("{id:guid}")]
-        public IActionResult PartiallyUpdateCompany(Guid id,[FromBody] JsonPatchDocument<CompanyForUpdateDTO> patchDoc)
+        public IActionResult PartiallyUpdateCompany(Guid id, [FromBody] JsonPatchDocument<CompanyForUpdateDTO> patchDoc)
         {
             if (patchDoc is null)
                 return BadRequest("patchDoc object sent from client is null.");
-            var result = _service.CompanyService.GetEmployeeForPatch(id,compTrackChanges: true);
-            patchDoc.ApplyTo(result.companyTopatch);
-            _service.CompanyService.SaveChangesForPatch(result.companyTopatch,result.companyEntity);
+            var result = _service.CompanyService.GetCompanyForPatch(id, compTrackChanges: true);
+            patchDoc.ApplyTo(result.companyTopatch, ModelState);
+            TryValidateModel(result.companyTopatch);
+            if (!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
+            _service.CompanyService.SaveChangesForPatch(result.companyTopatch, result.companyEntity);
             return NoContent();
         }
 

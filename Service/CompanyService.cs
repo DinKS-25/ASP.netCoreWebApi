@@ -91,13 +91,13 @@ namespace Service
             _repository.Save();
         }
 
-        public (CompanyForUpdateDTO companyTopatch, Company companyEntity) GetEmployeeForPatch(Guid companyId, bool compTrackChanges)
+        public (CompanyForUpdateDTO companyTopatch, Company companyEntity) GetCompanyForPatch(Guid companyId, bool compTrackChanges)
         {
             var compId = Convert.ToString(companyId);
             var company = _repository.CompanyRepository.GetCompany(compId, compTrackChanges);
             if (company is null)
                 throw new CompanyNotFoundException(compId);
-            var companyToPatch = _mapper.Map<CompanyForUpdateDTO>(company);
+            var companyToPatch = _mapper.Map<Company,CompanyForUpdateDTO>(company);//Not working for some 
             return(companyToPatch,company);
         }
 

@@ -1,4 +1,6 @@
 namespace Shared.DataTransferObjects
 {
-    public record CompanyForUpdateDTO(string name, int employeeCount, string address);
+    public record CompanyForUpdateDTO:CompanyForManipulationDto{
+        
+    }
 }
