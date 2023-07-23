@@ -42,7 +42,10 @@
             "command":"dotnet",
             "type": "process",
             "args": [
-                "clean"
+                "clean",
+                "${workspaceFolder}/Solution.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher":"$msCompile"
         }

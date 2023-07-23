@@ -1,5 +1,14 @@
 using API.Extensions;
 using Contracts;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.Options;
+
+NewtonsoftJsonPatchInputFormatter GetJsonPatchInputFormatter()
+{
+    return new ServiceCollection().AddLogging().AddMvc().AddNewtonsoftJson().Services.BuildServiceProvider()
+            .GetRequiredService<IOptions<MvcOptions>>().Value.InputFormatters.OfType<NewtonsoftJsonPatchInputFormatter>().First();
+}
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -14,7 +23,10 @@ builder.Services.AddControllers(
     {
         config.RespectBrowserAcceptHeader = true;
         config.ReturnHttpNotAcceptable = true;
+        config.InputFormatters.Insert(0, GetJsonPatchInputFormatter());
+
     }).AddXmlDataContractSerializerFormatters()
+.AddNewtonsoftJson()
 .AddCustomCSVFormatter()
 .AddApplicationPart(typeof(API.Presentation.AssemblyReference).Assembly);
 builder.Services.AddEndpointsApiExplorer();

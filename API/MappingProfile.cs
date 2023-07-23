@@ -10,6 +10,7 @@ namespace API
         {
             CreateMap<Company,CompanyDto>().ForMember(c=>c.NameWithCount,opt=>opt.MapFrom(x=>string.Join('-',x.name,x.employeeCount)));
             CreateMap<CompanyForCreationDto,Company>();
+            CreateMap<CompanyForUpdateDTO,Company>().ReverseMap();
         }
     }
 }

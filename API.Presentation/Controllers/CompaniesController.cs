@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using API.Presentation.ModelBinders;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Service.Contracts;
@@ -57,5 +58,33 @@ namespace API.Presentation.Controllers
             return CreatedAtRoute("CompanyCollection", new { result.ids },
             result.companies);
         }
+
+        [HttpDelete("{companyId:guid}")]
+        public IActionResult DeleteCompany(Guid companyId)
+        {
+            _service.CompanyService.RemoveCompany(companyId, trackChanges: false);
+            return NoContent();
+        }
+
+        [HttpPut("{id:guid}")]
+        public IActionResult UpdateEmployeeForCompany(Guid id, [FromBody] CompanyForUpdateDTO companyForUpdate)
+        {
+            if (companyForUpdate is null)
+                return BadRequest("companyForUpdate object is null");
+            _service.CompanyService.UpdateCompany(id, companyForUpdate, trackChanges: true);
+            return NoContent();
+        }
+
+        [HttpPatch("{id:guid}")]
+        public IActionResult PartiallyUpdateCompany(Guid id,[FromBody] JsonPatchDocument<CompanyForUpdateDTO> patchDoc)
+        {
+            if (patchDoc is null)
+                return BadRequest("patchDoc object sent from client is null.");
+            var result = _service.CompanyService.GetEmployeeForPatch(id,compTrackChanges: true);
+            patchDoc.ApplyTo(result.companyTopatch);
+            _service.CompanyService.SaveChangesForPatch(result.companyTopatch,result.companyEntity);
+            return NoContent();
+        }
+
     }
 }
